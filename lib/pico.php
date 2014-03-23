@@ -63,7 +63,7 @@ class Pico {
 		$content = $this->parse_content($content);
 		$this->run_hooks('after_parse_content', array(&$content));
 		$this->run_hooks('content_parsed', array(&$content)); // Depreciated @ v0.8
-		
+
 		// Get all the pages
 		$pages = $this->get_pages($settings['base_url'], $settings['pages_order_by'], $settings['pages_order'], $settings['excerpt_length']);
 		$prev_page = array();
@@ -93,14 +93,16 @@ class Pico {
 			'theme_dir' => THEMES_DIR . $settings['theme'],
 			'theme_url' => $settings['base_url'] .'/'. basename(THEMES_DIR) .'/'. $settings['theme'],
 			'site_title' => $settings['site_title'],
-			'meta' => $meta,
-			'content' => $content,
+			//'meta' => $meta, <-- now gotten from json
+			//'content' => $content, <-- now gotten from json
 			'pages' => $pages,
 			'prev_page' => $prev_page,
 			'current_page' => $current_page,
 			'next_page' => $next_page,
 			'is_front_page' => $url ? false : true,
 		);
+
+		$twig_vars = array_merge($twig_vars, $content);
 
 		$template = (isset($meta['template']) && $meta['template']) ? $meta['template'] : 'index';
 		$this->run_hooks('before_render', array(&$twig_vars, &$twig, &$template));
@@ -136,9 +138,11 @@ class Pico {
 	 */
 	protected function parse_content($content)
 	{
-		$content = preg_replace('#/\*.+?\*/#s', '', $content); // Remove comments and meta
-		$content = str_replace('%base_url%', $this->base_url(), $content);
-		$content = MarkdownExtra::defaultTransform($content);
+		//$content = preg_replace('#/\*.+?\*/#s', '', $content); // Remove comments and meta
+		//$content = str_replace('%base_url%', $this->base_url(), $content);
+		//$content = MarkdownExtra::defaultTransform($content);
+
+		$content = json_decode($content, true);
 
 		return $content;
 	}
@@ -245,8 +249,8 @@ class Pico {
 				'author' => isset($page_meta['author']) ? $page_meta['author'] : '',
 				'date' => isset($page_meta['date']) ? $page_meta['date'] : '',
 				'date_formatted' => isset($page_meta['date']) ? date($config['date_format'], strtotime($page_meta['date'])) : '',
-				'content' => $page_content,
-				'excerpt' => $this->limit_words(strip_tags($page_content), $excerpt_length)
+				'content' => $page_content
+				//'excerpt' => $this->limit_words(strip_tags($page_content), $excerpt_length)
 			);
 
 			// Extend the data provided with each page by hooking into the data array

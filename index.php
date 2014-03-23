@@ -2,7 +2,7 @@
 
 define('ROOT_DIR', realpath(dirname(__FILE__)) .'/');
 define('CONTENT_DIR', ROOT_DIR .'content/');
-define('CONTENT_EXT', '.md');
+define('CONTENT_EXT', '.json');
 define('LIB_DIR', ROOT_DIR .'lib/');
 define('PLUGINS_DIR', ROOT_DIR .'plugins/');
 define('THEMES_DIR', ROOT_DIR .'themes/');

@@ -1,0 +1,18 @@
+{
+	"meta": {
+		"title": "Test Page"
+	},
+ 	"content": {
+		"main": "Test",
+		"gallery": [
+			{
+				"title": "Image 1",
+				"src": "image1src"
+			},
+			{
+				"title": "Image 2",
+				"src": "image2src"
+			}
+		]
+ 	}
+}

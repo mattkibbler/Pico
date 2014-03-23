@@ -30,7 +30,10 @@
 
 	<section id="content">
 		<div class="inner">
-			{{ content }}
+			{{ content.main }}
+			{% for image in content.gallery %}
+			<p>{{image.title}}</p>
+			{% endfor %}
 		</div>
 	</section>
 	
